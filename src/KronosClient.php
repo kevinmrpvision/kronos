@@ -213,6 +213,12 @@ class KronosClient
                 $requestHeaders
             )
         );
+        if (401 === $response->getStatusCode()) {
+            // the access_token was not accepted, but isn't expired, we assume
+            // the user revoked it, also no need to try with refresh_token
+            $this->tokenStorage->deleteAccessToken($this->userId, $accessToken);
+            return $this->getAccessToken();
+        }
         if (!$response->isOkay()) {
             // if there is any other error, we can't deal with this here...
             throw new OAuthServerException($response);
