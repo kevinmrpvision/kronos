@@ -20,7 +20,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-namespace mrpvision\kronos\Http\Exception;
+namespace Mrpvision\Kronos\Http\Exception;
 use RuntimeException;
 class ResponseException extends RuntimeException
 {

@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos;
+namespace Mrpvision\Kronos;
 
 interface TokenStorageInterface
 {

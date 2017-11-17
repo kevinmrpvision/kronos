@@ -22,14 +22,14 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos;
+namespace Mrpvision\Kronos;
 
 use DateTime;
-use mrpvision\kronos\Exception\OAuthException;
-use mrpvision\kronos\Exception\OAuthServerException;
-use mrpvision\kronos\Http\HttpClientInterface;
-use mrpvision\kronos\Http\Request;
-use mrpvision\kronos\Http\Response;
+use Mrpvision\Kronos\Exception\OAuthException;
+use Mrpvision\Kronos\Exception\OAuthServerException;
+use Mrpvision\Kronos\Http\HttpClientInterface;
+use Mrpvision\Kronos\Http\Request;
+use Mrpvision\Kronos\Http\Response;
 use ParagonIE\ConstantTime\Base64;
 use ParagonIE\ConstantTime\Base64UrlSafe;
 
@@ -38,7 +38,7 @@ class KronosClient
     /** @var TokenStorageInterface */
     private $tokenStorage;
 
-    /** @var \mrpvision\kronos\Http\HttpClientInterface */
+    /** @var \Mrpvision\Kronos\Http\HttpClientInterface */
     private $httpClient;
 
     /** @var SessionInterface */
@@ -64,6 +64,7 @@ class KronosClient
      * @param \DateTime|null           $dateTime
      */
     public function __construct(
+            
         TokenStorageInterface $tokenStorage,
         HttpClientInterface $httpClient,
         SessionInterface $session = null,
@@ -105,6 +106,16 @@ class KronosClient
     {
         $this->provider = $provider;
     }
+    
+    /**
+     * @param Provider $provider
+     *
+     * @return void
+     */
+    public function getProvider()
+    {
+        return $this->provider;
+    }
 
     /**
      * @param string $userId
@@ -145,6 +156,51 @@ class KronosClient
     {
         $requestUri = $this->provider->getFullURL($requestUri);
         return $this->send( Request::post($requestUri, $postBody, $requestHeaders));
+    }
+    /**
+     * Perform a PUT request, convenience wrapper for ::send().
+     *
+     * @param string $requestScope
+     * @param string $requestUri
+     * @param array  $postBody
+     * @param array  $requestHeaders
+     *
+     * @return Http\Response|false
+     */
+    public function rawpost($requestUri, array $postBody, array $requestHeaders = [])
+    {
+        $requestUri = $this->provider->getFullURL($requestUri);
+        return $this->send( Request::rawpost($requestUri, $postBody, $requestHeaders));
+    }
+    /**
+     * Perform a PUT request, convenience wrapper for ::send().
+     *
+     * @param string $requestScope
+     * @param string $requestUri
+     * @param array  $postBody
+     * @param array  $requestHeaders
+     *
+     * @return Http\Response|false
+     */
+    public function put($requestUri, array $postBody, array $requestHeaders = [])
+    {
+        $requestUri = $this->provider->getFullURL($requestUri);
+        return $this->send( Request::put($requestUri, $postBody, $requestHeaders));
+    }
+    /**
+     * Perform a DELETE request, convenience wrapper for ::send().
+     *
+     * @param string $requestScope
+     * @param string $requestUri
+     * @param array  $postBody
+     * @param array  $requestHeaders
+     *
+     * @return Http\Response|false
+     */
+    public function delete($requestUri, array $requestHeaders = [])
+    {
+        $requestUri = $this->provider->getFullURL($requestUri);
+        return $this->send( Request::delete($requestUri, $requestHeaders));
     }
 
     /**
@@ -256,12 +312,10 @@ class KronosClient
                 'company' => $this->provider->getCompanyShortName()
             ]
         ];
-        $tokenRequestData = json_encode($tokenRequestData);
         $requestHeaders = [
                 'Api-Key' =>  $this->provider->getApiKey(),
                 'Accept'=>'application/json',
                 'Content-Type' => 'application/json',
-                'content-length' => strlen($tokenRequestData)
             ];
         
         $response = $this->httpClient->send(

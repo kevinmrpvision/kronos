@@ -22,18 +22,18 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\Http;
+namespace Mrpvision\Kronos\Http;
 
-use mrpvision\kronos\Http\Exception\CurlException;
+use Mrpvision\Kronos\Http\Exception\CurlException;
 
-class CurlHttpClient implements HttpClientInterface
-{
+class CurlHttpClient implements HttpClientInterface {
+
     /** @var resource */
     private $curlChannel;
 
     /** @var bool */
     private $allowHttp = false;
-    
+
     /** @var bool */
     private $proxy = false;
 
@@ -43,8 +43,7 @@ class CurlHttpClient implements HttpClientInterface
     /**
      * @param array $configData
      */
-    public function __construct(array $configData = [])
-    {
+    public function __construct(array $configData = []) {
         if (array_key_exists('allowHttp', $configData)) {
             $this->allowHttp = (bool) $configData['allowHttp'];
         }
@@ -54,8 +53,7 @@ class CurlHttpClient implements HttpClientInterface
         $this->curlInit();
     }
 
-    public function __destruct()
-    {
+    public function __destruct() {
         curl_close($this->curlChannel);
     }
 
@@ -64,8 +62,7 @@ class CurlHttpClient implements HttpClientInterface
      *
      * @return Response
      */
-    public function send(Request $request)
-    {
+    public function send(Request $request) {
         $curlOptions = [
             CURLOPT_CUSTOMREQUEST => $request->getMethod(),
             CURLOPT_URL => $request->getUri(),
@@ -84,8 +81,7 @@ class CurlHttpClient implements HttpClientInterface
     /**
      * @return void
      */
-    private function curlInit()
-    {
+    private function curlInit() {
         if (false === $curlChannel = curl_init()) {
             throw new CurlException('unable to create cURL channel');
         }
@@ -95,8 +91,7 @@ class CurlHttpClient implements HttpClientInterface
     /**
      * @return void
      */
-    private function curlReset()
-    {
+    private function curlReset() {
         if (function_exists('curl_reset')) {
             curl_reset($this->curlChannel);
         } else {
@@ -112,8 +107,7 @@ class CurlHttpClient implements HttpClientInterface
      *
      * @return Response
      */
-    private function exec(array $curlOptions, array $requestHeaders)
-    {
+    private function exec(array $curlOptions, array $requestHeaders) {
         $this->curlReset();
 
         $defaultCurlOptions = [
@@ -126,7 +120,7 @@ class CurlHttpClient implements HttpClientInterface
             CURLOPT_PROTOCOLS => $this->allowHttp ? CURLPROTO_HTTPS | CURLPROTO_HTTP : CURLPROTO_HTTPS,
             CURLOPT_HEADERFUNCTION => [$this, 'responseHeaderFunction'],
         ];
-        
+
         if (0 !== count($requestHeaders)) {
             $curlRequestHeaders = [];
             foreach ($requestHeaders as $k => $v) {
@@ -141,19 +135,16 @@ class CurlHttpClient implements HttpClientInterface
 
         if (false === $responseData = curl_exec($this->curlChannel)) {
             throw new CurlException(
-                sprintf(
-                    '[%d] %s',
-                    curl_errno($this->curlChannel),
-                    curl_error($this->curlChannel)
-                )
+            sprintf(
+                    '[%d] %s', curl_errno($this->curlChannel), curl_error($this->curlChannel)
+            )
             );
         }
         return new Response(
-            curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
-            // Psalm false positive (bool) for $responseData as we use
-            // CURLOPT_RETURNTRANSFER
-            $responseData,
-            $this->responseHeaderList
+                curl_getinfo($this->curlChannel, CURLINFO_HTTP_CODE),
+                // Psalm false positive (bool) for $responseData as we use
+                // CURLOPT_RETURNTRANSFER
+                $responseData, $this->responseHeaderList
         );
     }
 
@@ -163,8 +154,7 @@ class CurlHttpClient implements HttpClientInterface
      *
      * @return int
      */
-    private function responseHeaderFunction($curlChannel, $headerData)
-    {
+    private function responseHeaderFunction($curlChannel, $headerData) {
         if (false !== strpos($headerData, ':')) {
             list($key, $value) = explode(':', $headerData, 2);
             $this->responseHeaderList[trim($key)] = trim($value);
@@ -172,4 +162,5 @@ class CurlHttpClient implements HttpClientInterface
 
         return strlen($headerData);
     }
+
 }

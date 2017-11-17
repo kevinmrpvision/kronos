@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\Http;
+namespace Mrpvision\Kronos\Http;
 
 interface HttpClientInterface
 {

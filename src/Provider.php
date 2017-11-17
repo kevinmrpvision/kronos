@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos;
+namespace Mrpvision\Kronos;
 
 class Provider
 {
@@ -148,10 +148,13 @@ class Provider
      *
      * @see https://tools.ietf.org/html/rfc6749#section-3.2
      */
-    public function getFullURL($url)
-    {
-        $find = ['{cid}','{cname}'];
+    public function getFullURL($url) {
+        if (!isset(parse_url($url)['host'])) {
+            $url = $this->base_uri . $url;
+        }
+        $find = ['{cid}', '{cname}'];
         $replace = [$this->companyID, $this->companyShortName];
-        return str_replace($find, $replace, $this->base_uri.$url);
+        return str_replace($find, $replace, $url);
     }
+
 }

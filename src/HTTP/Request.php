@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\HTTP;
+namespace Mrpvision\Kronos\HTTP;
 
-class Request
-{
+class Request {
+
     /** @var string */
     private $requestMethod;
 
@@ -44,8 +44,7 @@ class Request
      * @param array  $requestHeaders
      * @param string $requestBody
      */
-    public function __construct($requestMethod, $requestUri, array $requestHeaders = [], $requestBody = null)
-    {
+    public function __construct($requestMethod, $requestUri, array $requestHeaders = [], $requestBody = null) {
         $this->requestMethod = $requestMethod;
         $this->requestUri = $requestUri;
         $this->requestBody = $requestBody;
@@ -58,8 +57,7 @@ class Request
      *
      * @return Request
      */
-    public static function get($requestUri, array $requestHeaders = [])
-    {
+    public static function get($requestUri, array $requestHeaders = []) {
         return new self('GET', $requestUri, $requestHeaders);
     }
 
@@ -70,18 +68,14 @@ class Request
      *
      * @return Request
      */
-    public static function post($requestUri, array $postData = [], array $requestHeaders = [])
-    {
+    public static function post($requestUri, array $postData = [], array $requestHeaders = []) {
         return new self(
-            'POST',
-            $requestUri,
-            array_merge(
-                $requestHeaders,
-                []
-            ),
-            http_build_query($postData, '&')
+                'POST', $requestUri, array_merge(
+                        $requestHeaders, []
+                ), http_build_query($postData, '&')
         );
     }
+
     /**
      * @param string $requestUri
      * @param array  $postData
@@ -89,15 +83,39 @@ class Request
      *
      * @return Request
      */
-    public static function rawpost($requestUri, $postData, array $requestHeaders = [])
-    {
+    public static function put($requestUri, $postData, array $requestHeaders = []) {
         return new self(
-            'POST',
-            $requestUri,
-            array_merge(
-                $requestHeaders,
-                []
-            ),$postData
+                'PUT', $requestUri, array_merge(
+                        $requestHeaders, []
+                ), $postData
+        );
+    }
+
+    /**
+     * @param string $requestUri
+     * @param array  $postData
+     * @param array  $requestHeaders
+     *
+     * @return Request
+     */
+    public static function delete($requestUri, array $requestHeaders = []) {
+        return new self('DELETE', $requestUri, $requestHeaders);
+    }
+
+    /**
+     * @param string $requestUri
+     * @param array  $postData
+     * @param array  $requestHeaders
+     *
+     * @return Request
+     */
+    public static function rawpost($requestUri, $postData, array $requestHeaders = []) {
+        $postData = json_encode($postData);
+        return new self(
+                'POST', $requestUri, array_merge(
+                        $requestHeaders, ['Content-Length' => strlen($postData),
+                    'Content-Type' => 'application/json']
+                ), $postData
         );
     }
 
@@ -107,40 +125,36 @@ class Request
      *
      * @return void
      */
-    public function setHeader($key, $value)
-    {
+    public function setHeader($key, $value) {
         $this->requestHeaders[$key] = $value;
     }
 
     /**
      * @return string
      */
-    public function getMethod()
-    {
+    public function getMethod() {
         return $this->requestMethod;
     }
 
     /**
      * @return string
      */
-    public function getUri()
-    {
+    public function getUri() {
         return $this->requestUri;
     }
 
     /**
      * @return string|null
      */
-    public function getBody()
-    {
+    public function getBody() {
         return $this->requestBody;
     }
 
     /**
      * @return array
      */
-    public function getHeaders()
-    {
+    public function getHeaders() {
         return $this->requestHeaders;
     }
+
 }

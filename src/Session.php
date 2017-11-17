@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos;
+namespace Mrpvision\Kronos;
 
-use mrpvision\kronos\Exception\SessionException;
+use Mrpvision\Kronos\Exception\SessionException;
 
 class Session implements SessionInterface
 {

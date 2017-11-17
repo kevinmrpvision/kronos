@@ -1,7 +1,7 @@
 {
     "name": "mrpvision/kronos",
     "description": "Boilerplate package for creating other packages.",
-    "keywords": ["composer", "package"],
+    "keywords": ["composer", "package","kronos","mrpvision","kevinmrpvision"],
     "license": "DBAD",
     "authors": [
         {
@@ -18,7 +18,7 @@
     },
 	"autoload": {
         "psr-4": {
-            "Mrpvision\\kronos\\": "src/"
+            "Mrpvision\\Kronos\\": "src/"
         }
     }
 }

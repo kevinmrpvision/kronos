@@ -22,9 +22,9 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\Http;
+namespace Mrpvision\Kronos\Http;
 
-use mrpvision\kronos\Http\Exception\ResponseException;
+use Mrpvision\Kronos\Http\Exception\ResponseException;
 
 class Response
 {
@@ -112,6 +112,13 @@ class Response
         }
 
         return $decodedJson;
+    }
+    /**
+     * @return mixed
+     */
+    public function toArray()
+    {
+        return json_decode($this->responseBody,true);
     }
 
     /**

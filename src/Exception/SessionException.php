@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\Exception;
+namespace Mrpvision\Kronos\Exception;
 
 use RuntimeException;
 

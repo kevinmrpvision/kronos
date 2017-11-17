@@ -22,10 +22,10 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos\Exception;
+namespace Mrpvision\Kronos\Exception;
 
 use Exception;
-use mrpvision\kronos\Http\Response;
+use Mrpvision\Kronos\Http\Response;
 
 class OAuthServerException extends OAuthException
 {

@@ -22,11 +22,11 @@
  * SOFTWARE.
  */
 
-namespace mrpvision\kronos;
+namespace Mrpvision\Kronos;
 
 use DateInterval;
 use DateTime;
-use mrpvision\kronos\Exception\AccessTokenException;
+use Mrpvision\Kronos\Exception\AccessTokenException;
 use RuntimeException;
 
 class AccessToken
