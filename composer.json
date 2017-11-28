@@ -1,6 +1,6 @@
 {
     "name": "mrpvision/kronos",
-    "description": "Boilerplate package for creating other packages.",
+    "description": "Boilerplate package for Kronos Rest API 2.0.",
     "keywords": ["composer", "package","kronos","mrpvision","kevinmrpvision"],
     "license": "DBAD",
     "authors": [
@@ -9,7 +9,7 @@
             "email": "kevin@mrpvision.com"
         }
     ],
-    "type": "project",
+    "type": "package",
     "require": {
 		"php": ">=5.6"
     },
